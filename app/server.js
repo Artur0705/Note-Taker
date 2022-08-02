@@ -65,4 +65,21 @@ app.post("/api/notes", (req, res) => {
   res.status(201).send();
 });
 
+// Making a delete request, reading the file and removing the note with given id and then rewriting db. 
+app.delete("/api/notes/:id", (req, res) => {
+  fs.readFile(getDb(), "utf8", (err, data) => {
+    if (err) {
+      console.error(err);
+    } else {
+      let notes = JSON.parse(data);
+      notes = notes.filter((note) => note.id !== req.params.id);
 
+      fs.writeFile(getDb(), JSON.stringify(notes, null, 4), (writeErr) =>
+        writeErr
+          ? console.error(writeErr)
+          : console.log("Successfully deleted a note!")
+      );
+    }
+  });
+  res.status(200).send();
+});
