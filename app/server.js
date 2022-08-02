@@ -28,16 +28,41 @@ const getDb = () => {
 
 // Notes route
 app.get("/notes", (req, res) => {
-    res.sendFile(getHtml("notes"));
+  res.sendFile(getHtml("notes"));
 });
 
 // Index route
 app.get("/", (req, res) => {
-    res.sendFile(getHtml("index"));
+  res.sendFile(getHtml("index"));
 });
 
 // Updating db
 app.get("/api/notes", (req, res) => {
-    res.sendFile(getDb());
+  res.sendFile(getDb());
 });
+
+// Making a post request, reading db, assigning ID to each note and appending it to db and updating it.
+app.post("/api/notes", (req, res) => {
+  fs.readFile(getDb(), "utf8", (err, data) => {
+    if (err) {
+      console.error(err);
+    } else {
+      const notes = JSON.parse(data);
+      const note = {
+        id: uuid.v4(),
+        ...req.body,
+      };
+
+      notes.push(note);
+
+      fs.writeFile(getDb(), JSON.stringify(notes, null, 4), (writeErr) =>
+        writeErr
+          ? console.error(writeErr)
+          : console.log("Successfully added a new note!")
+      );
+    }
+  });
+  res.status(201).send();
+});
+
 
