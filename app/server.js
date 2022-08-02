@@ -25,3 +25,19 @@ const getHtml = (name) => {
 const getDb = () => {
   return getFile(`../db/db.json`);
 };
+
+// Notes route
+app.get("/notes", (req, res) => {
+    res.sendFile(getHtml("notes"));
+});
+
+// Index route
+app.get("/", (req, res) => {
+    res.sendFile(getHtml("index"));
+});
+
+// Updating db
+app.get("/api/notes", (req, res) => {
+    res.sendFile(getDb());
+});
+
