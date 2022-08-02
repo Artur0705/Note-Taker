@@ -65,7 +65,7 @@ app.post("/api/notes", (req, res) => {
   res.status(201).send();
 });
 
-// Making a delete request, reading the file and removing the note with given id and then rewriting db. 
+// Making a delete request, reading the file and removing the note with given id and then rewriting db.
 app.delete("/api/notes/:id", (req, res) => {
   fs.readFile(getDb(), "utf8", (err, data) => {
     if (err) {
@@ -83,3 +83,7 @@ app.delete("/api/notes/:id", (req, res) => {
   });
   res.status(200).send();
 });
+
+app.listen(PORT, () =>
+  console.log(`Express server is listening on port ${PORT}!`)
+);
